@@ -1,6 +1,7 @@
 // INCLUDE SEQUENCE MECHANICS
 #include "deepsrc/Sequence.h"
 #include "deepsrc/Array.h"
+#include "deepsrc/List.h"
 
 // INCLUDE SORTER MECHANICS
 #include "deepsrc/ISorter.h"

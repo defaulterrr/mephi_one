@@ -13,7 +13,8 @@ int compare(int i, int j){
 
 int main(){
     std::cout << "Initialized" << std::endl;
-    Array<int> arr;
+    //Array<int> arr;
+    List<int> arr;
     for (int i = 100; i>0; i--){
         arr.append(i);
     }
