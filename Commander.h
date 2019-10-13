@@ -42,10 +42,69 @@ class Commander{
         //cout << "DEBUG_________Added container" << endl;
     }
 
+    void outputContainer(string withName){
+        int index;
+        for (int i = 0; i<containers.size();i++) {
+            if (containers[i].name == withName) {
+                index = i; break;
+            }
+        }
+        container activeContainer = containers[index];
+
+        if (activeContainer.type == "Array") {
+            Sequence<int> *outputSequence = activeContainer.value; 
+            for (unsigned int i=0;i<outputSequence->getLength();i++){
+            cout << ((Array<int>*)outputSequence)->get(i) << endl;
+            }
+        }
+        // print("Starting output");
+        // for (unsigned int i=0;i<activeContainer.value->getLength();i++){
+        //     cout << activeContainer.value->get(i) << endl;
+        // }
+    }
+
+    void shellSortContainer(string withName){
+        ShellSort<int> shellSorter;
+
+        int index;
+        for (int i = 0; i<containers.size();i++) {
+            if (containers[i].name == withName) {
+                index = i; break;
+            }
+        }
+
+        container activeContainer = containers[index];
+
+        std::cout << "\n\n SORTING NOW \n\n" << std::endl;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    shellSorter.sort(activeContainer.value,[](int i, int j){
+        if (i > j) {
+            return 1; //You can change it to -1
+        } else if (i < j) {
+            return -1; //You can change it to 1
+        } else if (i == j) {
+            return 0;
+        }
+        throw std::logic_error("Unexpected error!");
+    });
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsedTime =std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+    //  for (int i = 0; i<100; i++){
+    //     std::cout << activeContainer.value->get(i) << std::endl;
+    // }
+
+    std::cout << "Elapsed time is: "<< elapsedTime.count() << " microseconds"<< std::endl;
+        
+    }
+
     void removeContainer(string withName){
         int index;
         for (int i = 0; i<containers.size();i++) {
-            if (containers[i].name == withName){
+            if (containers[i].name == withName) {
                 index = i; break;
             }
         }
@@ -156,6 +215,12 @@ public:
                             if (task.commandList.size()!= 2) {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
                             }
+
+                            if (containers.size() == 0 ) {
+                                cout << "No containers are available at this moment, you may want to create some\n";
+                                continue;
+                            }
+
                             else listContainers();
                         }
 
@@ -183,11 +248,49 @@ public:
                                 else cout << "Unknown type of sequential container: available type are: array OR list\n";
                             }
                         }
+
+                        if (task.getLevel(1) == "show") {
+                            if (task.commandList.size() != 3 ) {
+                                cout << "Wrong implementation of the command - go check it in the help menu\n";
+                                continue;
+                            }
+                            else {
+                                outputContainer(task.getLevel(2));
+                            }
+                        }
+
+                        if (task.getLevel(1) == "delete") {
+                            if (task.commandList.size() != 3) {
+                                cout << "Wrong implementation of the command - go check it in the help menu\n";
+                                continue;
+                            }
+                            else {
+                                removeContainer(task.getLevel(1));
+                                cout << "Removed container with name \"" << task.getLevel(1) << "\"\n";
+                            }
+                        }
                         //cout << task.getLevel(2) << endl;
                         continue;
             }
 
             if (currentTopLevelCommand == sortCom){
+                if (task.commandList.size() != 3) {
+                    cout << "Wrong implementation of the command - go check it in the help menu\n";
+                    continue;
+                }
+                else {
+                    if (task.getLevel(2) == "shell") {
+                        print("Catched shell command");
+                        if (task.commandList.size() != 3) {
+                        cout << "Wrong implementation of the command - go check it in the help menu\n";
+                        continue;
+                        }
+                        else {
+                            shellSortContainer(task.getLevel(2));
+                            continue;
+                        }
+                    }
+                }
                 continue;
             }
 
