@@ -48,5 +48,5 @@ int main(){
     Commander bash = Commander();
     
     bash.eventLoop();
-
+    return 0;
 }

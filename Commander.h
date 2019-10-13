@@ -9,21 +9,70 @@ enum sortOrder{up,down};
 enum inputMode{automatic,manual,file};
 
 class Commander{
-    const float version = 0.1;
+    struct container {
+        Sequence<int>* value;
+        string name;
+        string type;
+        bool sorted;
+
+        container(Sequence<int>* value, string name, string type, bool sorted){
+            this->value = Sequence(value);
+            this->name = name;
+            this->type = type;
+            this->sorted = sorted;
+        }
+
+        ~container(){
+            
+        }
+    };
+    const float version = 0.2;
     containerType ContainerMode;
     sortType SortType;
     sortOrder SortMode;
     inputMode Mode;
 
     string currentTopLevelCommand;
+
+    vector<container> containers;
+
+    void addContainer(container toAdd){
+        containers.push_back(toAdd);
+    }
+
+    void removeContainer(string withName){
+        int index;
+        for (int i = 0; i<containers.size();i++) {
+            if (containers[i].name == withName){
+                index = i; break;
+            }
+        }
+        containers.erase(containers.begin()+index);
+    }
+
+    void listContainers(){
+        cout << "Number     Name        Type        Sorted\n";
+        for (int i=0;i<containers.size();i++) {
+            cout.width(12);
+            cout << i << containers[i].name << containers[i].type << containers[i].sorted << endl;
+        }
+    }
     /*
     first level:
-        help
-        container
-        sort
-        test
+        help    
+        container [2-nd level] [name] [List or Array]
+            create
+            select
+            list
+            delete
+        sort      [2-nd level]
+            shell
+            input
+        test      [2-nd level]
+            test1
+            ...
     */
-    string helpCom = "help";
+    const string helpCom = "help";
     const string containerCom = "container";
     const string sortCom = "sort";
     const string testCom = "test";
@@ -33,6 +82,14 @@ class Commander{
 
     void print(string message){
         cout << message << endl;
+    }
+
+    string getCommand(){
+        string commandToGet;
+        getline(cin,commandToGet);
+        if (commandToGet.empty()) {return "unkn";}
+        else
+        return commandToGet;
     }
 
 
@@ -49,13 +106,7 @@ public:
         cout << "For the list of all available commands enter \"help\"" << endl;
     }
 
-    string getCommand(){
-        string commandToGet;
-        getline(cin,commandToGet);
-        if (commandToGet.empty()) {return "unkn";}
-        else
-        return commandToGet;
-    }
+    
 
     void eventLoop(){
         while (currentTopLevelCommand != "exit" && currentTopLevelCommand!="q" && currentTopLevelCommand!="quit" && currentTopLevelCommand!="^C"){
@@ -71,7 +122,18 @@ public:
                 continue;
             }
 
-            if (currentTopLevelCommand == containerCom){
+            if (task.getLevel(0) == containerCom){
+                //cout << "Catched container command\n";
+                if (task.getLevel(1) == "list") {
+                    Array<int> cont;
+                    for (unsigned int i = 0 ; i < 100; i++){
+                        cont.append(rand()%150);
+                    }
+                    container contT = container(&cont,"First","Array",false);
+                    addContainer(contT);
+                    listContainers();
+                }
+                cout << task.getLevel(2) << endl;
                 continue;
             }
 
@@ -83,7 +145,7 @@ public:
                 continue;
             }
 
-            cout << "Unknown Command, please refer to instructions when inputting a command string\n";
+            if (currentTopLevelCommand != "exit" && currentTopLevelCommand!="q" && currentTopLevelCommand!="quit" && currentTopLevelCommand!="^C") cout << "Unknown Command, please refer to instructions when inputting a command string\n";
         }
     }
 };
