@@ -21,7 +21,7 @@ struct Command{
     }
 
     string getLevel(int index){
-        if (index > commandList.size()) {
+        if (index >= commandList.size()) {
             return "Insufficient amount of arguments for command";
         } 
         else

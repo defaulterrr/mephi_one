@@ -16,7 +16,7 @@ class Commander{
         bool sorted;
 
         container(Sequence<int>* value, string name, string type, bool sorted){
-            this->value = Sequence(value);
+            this->value = value;
             this->name = name;
             this->type = type;
             this->sorted = sorted;
@@ -26,6 +26,7 @@ class Commander{
             
         }
     };
+    const int contsize = 1000;
     const float version = 0.2;
     containerType ContainerMode;
     sortType SortType;
@@ -38,6 +39,7 @@ class Commander{
 
     void addContainer(container toAdd){
         containers.push_back(toAdd);
+        //cout << "DEBUG_________Added container" << endl;
     }
 
     void removeContainer(string withName){
@@ -51,10 +53,32 @@ class Commander{
     }
 
     void listContainers(){
-        cout << "Number     Name        Type        Sorted\n";
+        // cout << "DEBUG_________Called for listing" << endl;
+        // cout << "DEBUG_________Now " << containers.size() << " Allocated" << endl;
+        cout << "Number      Name        Type        Sorted\n";
+        cout << "––––––––––––––––––––––––––––––––––––––––––\n";
         for (int i=0;i<containers.size();i++) {
+            // cout.width(8);cout.left;
+            // cout << i << containers[i].name << containers[i].type << containers[i].sorted << endl;
+
             cout.width(12);
-            cout << i << containers[i].name << containers[i].type << containers[i].sorted << endl;
+            cout.left;
+            cout << std::left << i+1;
+            cout.width(12);
+            cout.left;
+            cout << std::left << containers[i].name;
+            cout.width(12);
+            cout.left;
+            cout << std::left <<containers[i].type;
+            cout.width(12);
+            cout.left;
+            if (containers[i].sorted) {
+                cout << std::left <<"Sorted";
+            }
+            else {
+                cout << std::left << "Not Sorted";
+            }
+            cout << endl;
         }
     }
     /*
@@ -123,18 +147,44 @@ public:
             }
 
             if (task.getLevel(0) == containerCom){
-                //cout << "Catched container command\n";
-                if (task.getLevel(1) == "list") {
-                    Array<int> cont;
-                    for (unsigned int i = 0 ; i < 100; i++){
-                        cont.append(rand()%150);
-                    }
-                    container contT = container(&cont,"First","Array",false);
-                    addContainer(contT);
-                    listContainers();
+                if (task.commandList.size()==1) {
+                    cout << "Wrong implementation of the command - go check it in the help menu\n";
+                    continue;
                 }
-                cout << task.getLevel(2) << endl;
-                continue;
+                //cout << "Catched container command\n";
+                        if (task.getLevel(1) == "list") {
+                            if (task.commandList.size()!= 2) {
+                                cout << "Wrong implementation of the command - go check it in the help menu\n";
+                            }
+                            else listContainers();
+                        }
+
+                        if (task.getLevel(1) == "create") {
+                            if (task.commandList.size()<4 or task.commandList.size() > 4) {
+                                cout << "Wrong implementation of the command - go check it in the help menu\n";
+                            }
+                            else {
+                                if (task.getLevel(3) == "array") {
+                                    Array<int> cont;
+                                    for (unsigned int i=0; i<contsize; i++) {
+                                        cont.append(rand()%150+ i*10%rand());
+                                    }
+                                    container contT = container(&cont,task.getLevel(2),"Array",false);
+                                    addContainer(contT);
+                                }
+                                else if (task.getLevel(3) == "list") {
+                                    List<int> cont;
+                                    for (unsigned int i=0; i<contsize; i++) {
+                                        cont.append(rand()%150+ i*10%rand());
+                                    }
+                                    container contT = container(&cont,task.getLevel(2),"Array",false);
+                                    addContainer(contT);
+                                }
+                                else cout << "Unknown type of sequential container: available type are: array OR list\n";
+                            }
+                        }
+                        //cout << task.getLevel(2) << endl;
+                        continue;
             }
 
             if (currentTopLevelCommand == sortCom){
