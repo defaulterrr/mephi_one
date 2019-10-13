@@ -4,7 +4,7 @@
 int main(){
     std::cout << "Initialized" << std::endl;
 
-
+/*
     List<int> arr;
 
     for (int i = 100; i>0; i--){
@@ -44,8 +44,9 @@ int main(){
     }
 
     std::cout << "Elapsed time is: "<< elapsedTime.count() << " microseconds"<< std::endl;
-    
+    */
     Commander bash = Commander();
+    
     bash.eventLoop();
 
 }

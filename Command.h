@@ -13,9 +13,19 @@ struct Command{
     
 
     Command(string command){
+        if (command.empty()) {} else {
         this->wholeCommand = command;
         wholeCommand += ' ';
         analyze();
+        }
+    }
+
+    string getLevel(int index){
+        if (index > commandList.size()) {
+            return "Insufficient amount of arguments for command";
+        } 
+        else
+            return commandList[index];
     }
 
 private:
@@ -49,6 +59,16 @@ private:
             //cout << message << endl;
             if (message == "") {} else
             {commandList.push_back(message);}
+        }
+
+        // for (int i = 0; i < commandList.size(); i++){
+        //     cout << commandList[i] << endl;
+        // }
+
+        for (int i = 0; i < commandList.size(); i++) {
+            string message = commandList[i].substr(0,commandList[i].size()-1);
+            commandList[i] = message;
+            //cout << message << endl;
         }
 
         //cout << "minimal white space is : " << minimalWhiteSpace << endl;
