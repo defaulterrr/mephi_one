@@ -19,7 +19,7 @@ int main(){
 
     //int compare = [](int j, int i){};
 
-    ShellSort<int> mergeSorter;
+    MergeSort<int> mergeSorter;
 
     std::cout << "\n\n SORTING NOW \n\n" << std::endl;
 

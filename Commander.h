@@ -26,16 +26,33 @@ class Commander{
             this->name = name;
             this->type = type;
             this->sorted = sorted;
-            cout << "Got here" << endl;
-            for (unsigned int i =0 ;i<value->getLength();i++){
-                cout << this->value->get(i) << endl;
+            //cout << "Got here" << endl;
+            // for (unsigned int i =0 ;i<value->getLength();i++){
+            //     cout << this->value->get(i) << endl;
+            // }
+        }
+
+        container(List<int>* value, string name, string type, bool sorted){
+            if (type == "Array") {
+                this->value = new Array<int>(value);
             }
+            if (type == "List") {
+                this->value = new List<int>(value);
+            }
+            
+            this->name = name;
+            this->type = type;
+            this->sorted = sorted;
+            //cout << "Got here" << endl;
+            // for (unsigned int i =0 ;i<value->getLength();i++){
+            //     cout << this->value->get(i) << endl;
+            // }
         }
 
         ~container(){
-            if (value!=nullptr) {
-                delete value;
-            }
+            // if (value!=nullptr) {
+            //     delete [] value;
+            // }
         }
     };
     const int contsize = 10;
@@ -51,7 +68,7 @@ class Commander{
 
     void addContainer(container toAdd){
         containers.push_back(toAdd);
-        cout << "DEBUG_________Added container" << endl;
+        //cout << "DEBUG_________Added container" << endl;
     }
 
     void outputContainer(string withName){
@@ -65,9 +82,9 @@ class Commander{
 
         if (activeContainer.type == "Array") {
             Sequence<int> *outputSequence = activeContainer.value; 
-            print("Getting length");
+            //print("Getting length");
             for (unsigned int i=0;i<outputSequence->getLength();i++){
-            print("Output command");
+            //print("Output command");
             cout << outputSequence->get(i) << endl;
             }
         }
@@ -103,6 +120,50 @@ class Commander{
         }
         throw std::logic_error("Unexpected error!");
     });
+
+
+    
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsedTime =std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+    //  for (int i = 0; i<100; i++){
+    //     std::cout << activeContainer.value->get(i) << std::endl;
+    // }
+
+    std::cout << "Elapsed time is: "<< elapsedTime.count() << " microseconds"<< std::endl;
+        
+    }
+
+    void inputSortContainer(string withName){
+        InputSort<int> shellSorter;
+
+        int index;
+        for (int i = 0; i<containers.size();i++) {
+            if (containers[i].name == withName) {
+                index = i; break;
+            }
+        }
+
+        container activeContainer = containers[index];
+
+        std::cout << "\n\n SORTING NOW \n\n" << std::endl;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    shellSorter.sort(activeContainer.value,[](int i, int j){
+        if (i > j) {
+            return 1; //You can change it to -1
+        } else if (i < j) {
+            return 0; //You can change it to 1
+        } else if (i == j) {
+            return 0;
+        }
+        throw std::logic_error("Unexpected error!");
+    });
+
+
+    
 
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsedTime =std::chrono::duration_cast<std::chrono::microseconds>(end - start);
@@ -249,13 +310,14 @@ public:
                                         cont.append(rand()%150+ i*10%rand());
                                     }
 
-                                    for (unsigned int i=0;i<cont.getLength();i++){
-                                        cout << cont.get(i) << endl;
-                                    }
-                                    print("And here");
+                                    // for (unsigned int i=0;i<cont.getLength();i++){
+                                    //     cout << cont.get(i) << endl;
+                                    // }
+                                    //print("And here");
                                     container contT = container(&cont,task.getLevel(2),"Array",false);
                                     addContainer(contT);
-                                    print("Succesfully added container");
+                                    //print("Succesfully added container");
+                                    print("Succesfully created container with Array type sequence with name:" + task.getLevel(2) + "\n");
                                     continue;
                                     }
                                 
@@ -264,13 +326,13 @@ public:
                                             for (unsigned int i=0; i<contsize; i++) {
                                                 cont.append(rand()%150+ i*10%rand());
                                             }
-                                    //container contT = container(&cont,task.getLevel(2),"Array",false);
-                                    //addContainer(contT);
+                                    container contT = container(&cont,task.getLevel(2),"Array",false);
+                                    addContainer(contT);
                                 }
                                 else cout << "Unknown type of sequential container: available type are: array OR list\n";
                             }
                         }
-                                                        print("Got out of create zone");
+                                
 
                         if (task.getLevel(1) == "show") {
                             if (task.commandList.size() != 3 ) {
@@ -296,20 +358,32 @@ public:
                         continue;
             }
 
-            if (currentTopLevelCommand == sortCom){
+            if (task.getLevel(0) == sortCom){
                 if (task.commandList.size() != 3) {
                     cout << "Wrong implementation of the command - go check it in the help menu\n";
                     continue;
                 }
                 else {
-                    if (task.getLevel(2) == "shell") {
-                        print("Catched shell command");
+
+                    if (task.getLevel(1) == "shell") {
+                        //print("Catched shell command");
                         if (task.commandList.size() != 3) {
                         cout << "Wrong implementation of the command - go check it in the help menu\n";
                         continue;
                         }
                         else {
                             shellSortContainer(task.getLevel(2));
+                            continue;
+                        }
+                    }
+
+                    else if (task.getLevel(1) == "input") {
+                        if (task.commandList.size() != 3) {
+                            cout << "Wrong implementation of the command - go check it in the help menu\n";
+                            continue;
+                        }
+                        else {
+                            inputSortContainer(task.getLevel(2));
                             continue;
                         }
                     }
