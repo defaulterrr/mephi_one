@@ -10,23 +10,35 @@ enum inputMode{automatic,manual,file};
 
 class Commander{
     struct container {
-        Sequence<int>* value;
+        Sequence<int>* value = nullptr;
         string name;
         string type;
         bool sorted;
 
-        container(Sequence<int>* value, string name, string type, bool sorted){
-            this->value = value;
+        container(Array<int>* value, string name, string type, bool sorted){
+            if (type == "Array") {
+                this->value = new Array<int>(value);
+            }
+            if (type == "List") {
+                this->value = new List<int>(value);
+            }
+            
             this->name = name;
             this->type = type;
             this->sorted = sorted;
+            cout << "Got here" << endl;
+            for (unsigned int i =0 ;i<value->getLength();i++){
+                cout << this->value->get(i) << endl;
+            }
         }
 
         ~container(){
-            
+            if (value!=nullptr) {
+                delete value;
+            }
         }
     };
-    const int contsize = 1000;
+    const int contsize = 10;
     const float version = 0.2;
     containerType ContainerMode;
     sortType SortType;
@@ -39,7 +51,7 @@ class Commander{
 
     void addContainer(container toAdd){
         containers.push_back(toAdd);
-        //cout << "DEBUG_________Added container" << endl;
+        cout << "DEBUG_________Added container" << endl;
     }
 
     void outputContainer(string withName){
@@ -53,8 +65,10 @@ class Commander{
 
         if (activeContainer.type == "Array") {
             Sequence<int> *outputSequence = activeContainer.value; 
+            print("Getting length");
             for (unsigned int i=0;i<outputSequence->getLength();i++){
-            cout << ((Array<int>*)outputSequence)->get(i) << endl;
+            print("Output command");
+            cout << outputSequence->get(i) << endl;
             }
         }
         // print("Starting output");
@@ -230,24 +244,33 @@ public:
                             }
                             else {
                                 if (task.getLevel(3) == "array") {
-                                    Array<int> cont;
+                                    Array<int> cont = Array<int>();
                                     for (unsigned int i=0; i<contsize; i++) {
                                         cont.append(rand()%150+ i*10%rand());
                                     }
-                                    container contT = container(&cont,task.getLevel(2),"Array",false);
-                                    addContainer(contT);
-                                }
-                                else if (task.getLevel(3) == "list") {
-                                    List<int> cont;
-                                    for (unsigned int i=0; i<contsize; i++) {
-                                        cont.append(rand()%150+ i*10%rand());
+
+                                    for (unsigned int i=0;i<cont.getLength();i++){
+                                        cout << cont.get(i) << endl;
                                     }
+                                    print("And here");
                                     container contT = container(&cont,task.getLevel(2),"Array",false);
                                     addContainer(contT);
+                                    print("Succesfully added container");
+                                    continue;
+                                    }
+                                
+                                    else if (task.getLevel(3) == "list") {
+                                            List<int> cont;
+                                            for (unsigned int i=0; i<contsize; i++) {
+                                                cont.append(rand()%150+ i*10%rand());
+                                            }
+                                    //container contT = container(&cont,task.getLevel(2),"Array",false);
+                                    //addContainer(contT);
                                 }
                                 else cout << "Unknown type of sequential container: available type are: array OR list\n";
                             }
                         }
+                                                        print("Got out of create zone");
 
                         if (task.getLevel(1) == "show") {
                             if (task.commandList.size() != 3 ) {
