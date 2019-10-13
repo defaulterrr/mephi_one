@@ -1,5 +1,3 @@
-#ifndef MEPHI_LAB_0_NODE_H
-#define MEPHI_LAB_0_NODE_H
 
 template<typename TElement>
 class Node {
@@ -57,5 +55,3 @@ public:
     }
 };
 
-
-#endif //MEPHI_LAB_0_NODE_H

@@ -1,20 +1,6 @@
-
-//
-// Created by ikmokhirio on 04.09.2019.
-//
 #include <iostream>
 #include <cstdlib>
 #include "Sequence.h"
-
-#ifndef MEPHI_LAB_0_ARRAY_H
-#define MEPHI_LAB_0_ARRAY_H
-
-
-//Append 1, append 2, append 3
-//[1] [2] [3] >> prepend 5
-//[1] [1] [2] [3]
-//[5] [1] [2] [3]
-// 0   1   2   3
 
 template<class TElement>
 class Array : public Sequence<TElement> {
@@ -151,5 +137,3 @@ public:
     }
 };
 
-
-#endif //MEPHI_LAB_0_ARRAY_H
