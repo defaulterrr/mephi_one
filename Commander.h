@@ -122,7 +122,7 @@ class Commander{
     });
 
 
-    
+    containers[index].sorted = true;
 
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsedTime =std::chrono::duration_cast<std::chrono::microseconds>(end - start);
@@ -161,6 +161,8 @@ class Commander{
         }
         throw std::logic_error("Unexpected error!");
     });
+
+    activeContainer.sorted = true;
 
 
     
@@ -234,9 +236,11 @@ class Commander{
     const string containerCom = "container";
     const string sortCom = "sort";
     const string testCom = "test";
+    
+    //string help = "\nCommand Processor v0.1\n\nList of all available commands:\nhelp - shows this very menu\ncontainer - allows you to control your container, which are needed for the algorithms to work\nsort - allows you to sort containers with the algorithm of your choice\ntest - allows you to run included internal test\n\nAll commands are case-sensitive. Please, don\'t make it harder than it needs to be\n\n";
+    const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer createCustom {NAME} {array OR list} {size(int)} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
 
-    const string help = "\nCommand Processor v0.1\n\nList of all available commands:\nhelp - shows this very menu\ncontainer - allows you to control your container, which are needed for the algorithms to work\nsort - allows you to sort containers with the algorithm of your choice\ntest - allows you to run included internal test\n\nAll commands are case-sensitive. Please, don\'t make it harder than it needs to be\n\n";
-        
+    //help = newHelp;
 
     void print(string message){
         cout << message << endl;
@@ -300,14 +304,62 @@ public:
                         }
 
                         if (task.getLevel(1) == "create") {
-                            if (task.commandList.size()<4 or task.commandList.size() > 4) {
+                            if (task.commandList.size() < 4 or task.commandList.size() > 4) {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
                             }
                             else {
                                 if (task.getLevel(3) == "array") {
                                     Array<int> cont = Array<int>();
-                                    for (unsigned int i=0; i<contsize; i++) {
-                                        cont.append(rand()%150+ i*10%rand());
+                                    if (task.getLevel(4) != "Insufficient amount of arguments for command") {
+                                        for (unsigned int i=0;i<stoi(task.getLevel(4));i++) {
+                                            cont.append(rand()%150+ i*10%rand());
+                                        };
+                                    }
+                                    else {
+                                        for (unsigned int i=0; i<contsize; i++) {
+                                            cont.append(rand()%150+ i*10%rand());
+                                        }
+                                    }
+
+                                    // for (unsigned int i=0;i<cont.getLength();i++){
+                                    //     cout << cont.get(i) << endl;
+                                    // }
+                                    //print("And here");
+                                    container contT = container(&cont,task.getLevel(2),"Array",false);
+                                    addContainer(contT);
+                                    //print("Succesfully added container");
+                                    print("Succesfully created container with Array type sequence with name:" + task.getLevel(2) + "\n");
+                                    continue;
+                                    }
+                                
+                                    else if (task.getLevel(3) == "list") {
+                                            List<int> cont;
+                                            for (unsigned int i=0; i<contsize; i++) {
+                                                cont.append(rand()%150+ i*10%rand());
+                                            }
+                                    container contT = container(&cont,task.getLevel(2),"Array",false);
+                                    addContainer(contT);
+                                }
+                                else cout << "Unknown type of sequential container: available type are: array OR list\n";
+                            }
+                        }
+
+                        if (task.getLevel(1) == "createCustom") {
+                            if (task.commandList.size() < 5 or task.commandList.size() > 5) {
+                                cout << "Wrong implementation of the command - go check it in the help menu\n";
+                            }
+                            else {
+                                if (task.getLevel(3) == "array") {
+                                    Array<int> cont = Array<int>();
+                                    if (task.getLevel(4) != "Insufficient amount of arguments for command") {
+                                        for (unsigned int i=0;i<stoi(task.getLevel(4));i++) {
+                                            cont.append(rand()%150+ i*10%rand());
+                                        };
+                                    }
+                                    else {
+                                        for (unsigned int i=0; i<contsize; i++) {
+                                            cont.append(rand()%150+ i*10%rand());
+                                        }
                                     }
 
                                     // for (unsigned int i=0;i<cont.getLength();i++){
