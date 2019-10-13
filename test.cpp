@@ -1,20 +1,12 @@
-#include "UI.h"
 
-int compare(int i, int j){
-        if (i > j) {
-            return 1; //You can change it to -1
-        } else if (i < j) {
-            return -1; //You can change it to 1
-        } else if (i == j) {
-            return 0;
-        }
-        throw std::logic_error("Unexpected error!");
-    }
+#include "Commander.h"
 
 int main(){
     std::cout << "Initialized" << std::endl;
-    //Array<int> arr;
+
+
     List<int> arr;
+
     for (int i = 100; i>0; i--){
         arr.append(i);
     }
@@ -52,8 +44,8 @@ int main(){
     }
 
     std::cout << "Elapsed time is: "<< elapsedTime.count() << " microseconds"<< std::endl;
-
-    UI Interface = UI();
     
+    Commander bash = Commander();
+    bash.eventLoop();
 
 }
