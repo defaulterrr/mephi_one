@@ -135,8 +135,8 @@ class Commander{
         
     }
 
-    void inputSortContainer(string withName){
-        InputSort<int> shellSorter;
+    void insertSortContainer(string withName){
+        InsertSort<int> shellSorter;
 
         int index;
         for (int i = 0; i<containers.size();i++) {
@@ -383,7 +383,7 @@ public:
                             continue;
                         }
                         else {
-                            inputSortContainer(task.getLevel(2));
+                            insertSortContainer(task.getLevel(2));
                             continue;
                         }
                     }
