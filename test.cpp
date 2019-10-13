@@ -3,8 +3,10 @@
 
 int main(){
     std::cout << "Initialized" << std::endl;
-    /*
-    Array<int> arr;
+
+
+    List<int> arr;
+
     for (int i = 100; i>0; i--){
         arr.append(i);
     }
@@ -42,7 +44,7 @@ int main(){
     }
 
     std::cout << "Elapsed time is: "<< elapsedTime.count() << " microseconds"<< std::endl;
-    */
+    
     Commander bash = Commander();
     bash.eventLoop();
 
