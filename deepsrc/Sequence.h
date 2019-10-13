@@ -1,5 +1,12 @@
 #include <iostream>
 
+//
+// Created by ikmokhirio on 04.09.2019.
+//
+
+#ifndef MEPHI_LAB_0_SEQUENCE_H
+#define MEPHI_LAB_0_SEQUENCE_H
+
 template<class TElement>
 class Sequence {
 protected:
@@ -49,3 +56,5 @@ public:
     }
 };
 
+
+#endif //MEPHI_LAB_0_SEQUENCE_H

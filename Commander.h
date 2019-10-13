@@ -94,6 +94,37 @@ class Commander{
         // }
     }
 
+    void checkIfContainerIsSorted(string withName){
+        int index;
+        for (int i = 0; i<containers.size();i++) {
+            if (containers[i].name == withName) {
+                index = i; break;
+            }
+        }
+
+        container activeContainer = containers[index];
+        bool correct = true;
+        
+        int counter = 0;
+
+        while (counter < activeContainer.value->getLength()-2){
+            if (activeContainer.value->get(counter)>activeContainer.value->get(counter+1)){
+                correct = false;
+                cout << "Got incorrect result with " <<  activeContainer.value->get(counter) << " and "<<activeContainer.value->get(counter+1) << endl;
+                break;
+            }
+            counter++;
+            
+        }
+
+        if (correct) {
+            cout << "TEST PASSED" << endl;
+        }
+        else {
+            cout << "TEST NOT PASSED" << endl;
+        }
+    }
+
     void shellSortContainer(string withName){
         ShellSort<int> shellSorter;
 
@@ -238,7 +269,7 @@ class Commander{
     const string testCom = "test";
     
     //string help = "\nCommand Processor v0.1\n\nList of all available commands:\nhelp - shows this very menu\ncontainer - allows you to control your container, which are needed for the algorithms to work\nsort - allows you to sort containers with the algorithm of your choice\ntest - allows you to run included internal test\n\nAll commands are case-sensitive. Please, don\'t make it harder than it needs to be\n\n";
-    const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer createCustom {NAME} {array OR list} {size(int)} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
+    const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer createCustom {NAME} {array OR list} {size(int)} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\ntest - runs included tests for sorting algorithms\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
 
     //help = newHelp;
 
@@ -444,7 +475,56 @@ public:
             }
 
             if (currentTopLevelCommand == testCom){
-                continue;
+                                    Array<int> cont = Array<int>();
+                                    
+                                    
+                                    for (unsigned int i=0; i<contsize; i++) {
+                                        cont.append(rand()%150+ i*10%rand());
+                                    }
+                                    container contT = container(&cont,"Testing1","Array",false);
+                                    addContainer(contT);
+                                    print("Created Testing Container");
+                                    print("Printing Testing Container");
+                                    outputContainer("Testing1");
+                                    print("Sorting Container");
+                                    shellSortContainer("Testing1");
+                                    outputContainer("Testing1");
+                                    checkIfContainerIsSorted("Testing1");
+                                    //print("Succesfully added container");
+
+                                    print(" ");
+                                    print(" ");
+
+                                    print("Testing another way of sort");
+
+                                        Array<int> cont1 = Array<int>();
+                                    
+                                    
+                                    for (unsigned int i=0; i<contsize; i++) {
+                                        cont1.append(rand()%150+ i*10%rand());
+                                    }
+                                    
+
+                                    // for (unsigned int i=0;i<cont.getLength();i++){
+                                    //     cout << cont.get(i) << endl;
+                                    // }
+                                    //print("And here");
+                                    container contT1 = container(&cont1,"Testing2","Array",false);
+                                    addContainer(contT1);
+                                    print("Created Testing Container");
+                                    print("Printing Testing Container");
+                                    outputContainer("Testing2");
+                                    print("Sorting Container");
+                                    insertSortContainer("Testing2");
+                                                                        outputContainer("Testing2");
+
+                                    checkIfContainerIsSorted("Testing2");
+                                    //print("Succesfully added container");
+
+                                    print(" ");
+                                    print(" ");
+                                    
+                                                    continue;
             }
 
             if (currentTopLevelCommand != "exit" && currentTopLevelCommand!="q" && currentTopLevelCommand!="quit" && currentTopLevelCommand!="^C") cout << "Unknown Command, please refer to instructions when inputting a command string\n";
