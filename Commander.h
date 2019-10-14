@@ -71,6 +71,26 @@ class Commander{
         //cout << "DEBUG_________Added container" << endl;
     }
 
+    void addContainerWithCopy(string withName, string newName){
+        int index;
+        for (int i = 0; i<containers.size();i++) {
+            if (containers[i].name == withName) {
+                index = i; break;
+            }
+        }
+        container activeContainer = containers[index];
+
+        if (activeContainer.type == "Array") {
+            Array<int> sequence = Array<int>(activeContainer.value);
+            container newContainer = container(&sequence,newName,"Array",activeContainer.sorted);
+            addContainer(newContainer);
+        }
+
+        else if (activeContainer.type == "List") {
+
+        }
+    }
+
     void outputContainer(string withName){
         int index;
         for (int i = 0; i<containers.size();i++) {
@@ -92,6 +112,45 @@ class Commander{
         // for (unsigned int i=0;i<activeContainer.value->getLength();i++){
         //     cout << activeContainer.value->get(i) << endl;
         // }
+    }
+
+    void outputContainersAsCompare(string firstName, string secondName){
+        int index;
+        for (int i = 0; i<containers.size();i++) {
+            if (containers[i].name == firstName) {
+                index = i; break;
+            }
+        }
+        container activeContainer_1 = containers[index];
+
+        for (int i = 0; i<containers.size();i++) {
+            if (containers[i].name == secondName) {
+                index = i; break;
+            }
+        }
+
+        container activeContainer_2 = containers[index];
+
+
+        cout.width(10);
+        cout.left;
+        cout << "Original";
+        cout.width(10);
+        cout.left;
+        cout << "Sorted";
+        cout << endl;
+
+        if (activeContainer_1.value->getLength() == activeContainer_2.value->getLength()) {
+            for (unsigned int i=0;i<activeContainer_1.value->getLength();i++){
+            cout.width(10);
+            cout.left;
+            cout << activeContainer_1.value->get(i);
+            cout.width(10);
+            cout.left;
+            cout << activeContainer_2.value->get(i);
+            cout << endl;
+            }
+        }
     }
 
     void checkIfContainerIsSorted(string withName){
@@ -118,10 +177,10 @@ class Commander{
         }
 
         if (correct) {
-            cout << "TEST PASSED" << endl;
+            cout << "Container was succesfully sorted" << endl;
         }
         else {
-            cout << "TEST NOT PASSED" << endl;
+            cout << "Container was NOT sorted, something went wrong..." << endl;
         }
     }
 
@@ -137,7 +196,11 @@ class Commander{
 
         container activeContainer = containers[index];
 
-        std::cout << "\n\n SORTING NOW \n\n" << std::endl;
+        std::cout << "\n **Sorting now, this may take a while**\n" << std::endl;
+
+        addContainerWithCopy(withName,withName+"_tempsort");
+
+
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -157,6 +220,14 @@ class Commander{
 
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsedTime =std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    
+    outputContainersAsCompare(withName+"_tempsort",withName);
+
+    checkIfContainerIsSorted(withName);
+
+    removeContainer(withName+"_tempsort");
+
+
 
     //  for (int i = 0; i<100; i++){
     //     std::cout << activeContainer.value->get(i) << std::endl;
@@ -178,7 +249,9 @@ class Commander{
 
         container activeContainer = containers[index];
 
-        std::cout << "\n\n SORTING NOW \n\n" << std::endl;
+        addContainerWithCopy(withName,withName+"_tempsort");
+
+        std::cout << "\n **Sorting now, this may take a while**\n" << std::endl;
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -201,9 +274,15 @@ class Commander{
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsedTime =std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 
-    //  for (int i = 0; i<100; i++){
-    //     std::cout << activeContainer.value->get(i) << std::endl;
-    // }
+
+    outputContainersAsCompare(withName+"_tempsort",withName);
+
+    checkIfContainerIsSorted(withName);
+
+    containers[index].sorted = true;
+
+    removeContainer(withName+"_tempsort");
+
 
     std::cout << "Elapsed time is: "<< elapsedTime.count() << " microseconds"<< std::endl;
         
@@ -303,7 +382,7 @@ public:
 
     void eventLoop(){
         while (currentTopLevelCommand != "exit" && currentTopLevelCommand!="q" && currentTopLevelCommand!="quit" && currentTopLevelCommand!="^C"){
-            cout << ">> ";
+            cout << "  >> ";
             currentTopLevelCommand = getCommand();
             
             Command task = Command(currentTopLevelCommand);
@@ -372,6 +451,16 @@ public:
                                     addContainer(contT);
                                 }
                                 else cout << "Unknown type of sequential container: available type are: array OR list\n";
+                            }
+                        }
+
+                        if (task.getLevel(1) == "copy") {
+                            if (task.commandList.size() != 4) {
+                                cout << "Wrong implementatuin of the command – go check it in the help menu\n";
+                            }
+                            else {
+                                addContainerWithCopy(task.getLevel(3),task.getLevel(2));
+                                print("Created new container with name \"" + task.getLevel(2) + "\" as a copy of \"" + task.getLevel(3) +"\"\n");
                             }
                         }
 
