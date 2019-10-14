@@ -535,7 +535,7 @@ public:
                                             for (unsigned int i=0; i<contsize; i++) {
                                                 cont.append(rand()%150+ i*10%rand());
                                             }
-                                    container contT = container(&cont,task.getLevel(2),"Array",false);
+                                    container contT = container(&cont,task.getLevel(2),"List",false);
                                     addContainer(contT);
                                 }
                                 else cout << "Unknown type of sequential container: available type are: array OR list\n";
