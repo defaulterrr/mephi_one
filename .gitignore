@@ -2,3 +2,6 @@
 
 UI
 test
+.vscode/
+tasks.txt
+testCommand
