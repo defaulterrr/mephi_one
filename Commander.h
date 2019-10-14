@@ -549,7 +549,7 @@ public:
                         }
                     }
 
-                    else if (task.getLevel(1) == "input") {
+                    else if (task.getLevel(1) == "insert") {
                         if (task.commandList.size() != 3) {
                             cout << "Wrong implementation of the command - go check it in the help menu\n";
                             continue;
