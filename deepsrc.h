@@ -6,7 +6,7 @@
 // INCLUDE SORTER MECHANICS
 #include "deepsrc/ISorter.h"
 #include "deepsrc/ShellSort.h"
-#include "deepsrc/MergeSort.h"
+#include "deepsrc/InsertSort.h"
 
 // INCLUDE SYSTEM MECHANICS
 #include <chrono>   //For clock-based benchmarking
