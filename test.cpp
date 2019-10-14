@@ -46,7 +46,6 @@ int main(){
     std::cout << "Elapsed time is: "<< elapsedTime.count() << " microseconds"<< std::endl;
     */
     Commander bash = Commander();
-    
     bash.eventLoop();
     return 0;
 }

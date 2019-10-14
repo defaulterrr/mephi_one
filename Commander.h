@@ -66,6 +66,20 @@ class Commander{
 
     vector<container> containers;
 
+    Array<int> createRandomArray(int size){
+        Array<int> array = Array<int>();
+        for (unsigned int i = 0; i<size;i++){
+            array.append(rand()%150+ i*10%rand());
+        }
+    }
+
+    List<int> createRandomList(int size){
+        List<int> list = List<int>();
+        for (unsigned int i=0; i<size;i++){
+            list.append(rand()%150+ i*10%rand());
+        }
+    }
+
     void addContainer(container toAdd){
         containers.push_back(toAdd);
         //cout << "DEBUG_________Added container" << endl;
@@ -414,8 +428,39 @@ public:
                         }
 
                         if (task.getLevel(1) == "create") {
-                            if (task.commandList.size() < 4 or task.commandList.size() > 4) {
-                                cout << "Wrong implementation of the command - go check it in the help menu\n";
+                            if (task.commandList.size() == 5) {
+                                int test;
+                                try {
+                                    test = stoi(task.getLevel(4));
+                                }
+                                catch(const std::invalid_argument) {
+                                    cout << "Invalid argument: cannot be translated to size\n";
+                                    continue;
+                                }
+                                catch(const std::out_of_range) {
+                                    cout << "Invalid argument: size is too big\n";
+                                    continue;
+                                }
+
+                                if (task.getLevel(3) == "list") {
+                                            List<int> cont;
+                                            for (unsigned int i=0; i<test; i++) {
+                                                cont.append(rand()%150+ i*10%rand());
+                                            }
+                                    container contT = container(&cont,task.getLevel(2),"List",false);
+                                    addContainer(contT);
+                                    continue;
+                                }
+
+                                if (task.getLevel(3) == "array") {
+                                            List<int> cont;
+                                            for (unsigned int i=0; i<test; i++) {
+                                                cont.append(rand()%150+ i*10%rand());
+                                            }
+                                    container contT = container(&cont,task.getLevel(2),"Array",false);
+                                    addContainer(contT);
+                                }
+                                
                             }
                             else {
                                 if (task.getLevel(3) == "array") {
@@ -430,11 +475,6 @@ public:
                                             cont.append(rand()%150+ i*10%rand());
                                         }
                                     }
-
-                                    // for (unsigned int i=0;i<cont.getLength();i++){
-                                    //     cout << cont.get(i) << endl;
-                                    // }
-                                    //print("And here");
                                     container contT = container(&cont,task.getLevel(2),"Array",false);
                                     addContainer(contT);
                                     //print("Succesfully added container");
@@ -563,57 +603,37 @@ public:
                 continue;
             }
 
-            if (currentTopLevelCommand == testCom){
-                                    Array<int> cont = Array<int>();
-                                    
-                                    
-                                    for (unsigned int i=0; i<contsize; i++) {
-                                        cont.append(rand()%150+ i*10%rand());
-                                    }
-                                    container contT = container(&cont,"Testing1","Array",false);
-                                    addContainer(contT);
-                                    print("Created Testing Container");
-                                    print("Printing Testing Container");
-                                    outputContainer("Testing1");
-                                    print("Sorting Container");
-                                    shellSortContainer("Testing1");
-                                    outputContainer("Testing1");
-                                    checkIfContainerIsSorted("Testing1");
-                                    //print("Succesfully added container");
+            if (task.getLevel(0) == testCom){
+                if (!(task.commandList.size()==3 or task.commandList.size()==2)) {
+                    cout << "Wrong implementation of the command - go check it in the help menu\n";
+                }
+                else {
+                    if (task.commandList.size() == 2 and task.getLevel(1)!="string") {
+                        cout << "Wrong implementation of the command - go check it in the help menu\n";
+                        continue;
+                    }
+                    else {
+                        //TO-DO: create string test
+                        continue;
+                    }
 
-                                    print(" ");
-                                    print(" ");
-
-                                    print("Testing another way of sort");
-
-                                        Array<int> cont1 = Array<int>();
-                                    
-                                    
-                                    for (unsigned int i=0; i<contsize; i++) {
-                                        cont1.append(rand()%150+ i*10%rand());
-                                    }
-                                    
-
-                                    // for (unsigned int i=0;i<cont.getLength();i++){
-                                    //     cout << cont.get(i) << endl;
-                                    // }
-                                    //print("And here");
-                                    container contT1 = container(&cont1,"Testing2","Array",false);
-                                    addContainer(contT1);
-                                    print("Created Testing Container");
-                                    print("Printing Testing Container");
-                                    outputContainer("Testing2");
-                                    print("Sorting Container");
-                                    insertSortContainer("Testing2");
-                                                                        outputContainer("Testing2");
-
-                                    checkIfContainerIsSorted("Testing2");
-                                    //print("Succesfully added container");
-
-                                    print(" ");
-                                    print(" ");
-                                    
-                                                    continue;
+                    if (task.commandList.size() == 3) {
+                        if (task.getLevel(1) == "size") {
+                            if (task.getLevel(2) == "shell") {
+                                //TO-DO: create shell sort test with n=10000 
+                                continue;
+                            }
+                            if(task.getLevel(2) == "insert") {
+                                //TO-DO: create insert sort test with n=10000
+                                continue;
+                            }
+                        }
+                        else {
+                            cout << "Wrong implementation of the command - go check it in the help menu\n";
+                        }
+                    }
+                }
+                continue;
             }
 
             if (currentTopLevelCommand != "exit" && currentTopLevelCommand!="q" && currentTopLevelCommand!="quit" && currentTopLevelCommand!="^C") cout << "Unknown Command, please refer to instructions when inputting a command string\n";
