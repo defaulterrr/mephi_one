@@ -71,6 +71,29 @@ class Commander{
         for (unsigned int i = 0; i<size;i++){
             array.append(rand()%150+ i*10%rand());
         }
+        return array;
+    }
+
+    Array<int> createManualArray(int size){
+        Array<int> array = Array<int>();
+        for (unsigned int i = 0; i<size;i++){
+            int def;
+            string str;
+            getline(cin,str);
+            try {
+                def = stoi(str);
+            }
+            catch (std::out_of_range){
+                cout << "Number is out of range, using default i = 1235\n";
+                def = 1235;
+            }
+            catch (std::invalid_argument){
+                cout << "Invalid input, using default i = 1235\n";
+                def = 1235;
+            }
+            array.append(def);
+        }
+        return array;
     }
 
     List<int> createRandomList(int size){
@@ -78,6 +101,17 @@ class Commander{
         for (unsigned int i=0; i<size;i++){
             list.append(rand()%150+ i*10%rand());
         }
+        return list;
+    }
+
+    List<int> createManualList(int size){
+        List<int> list = List<int>();
+        for (unsigned int i=0; i<size;i++){
+            int def;
+            cin >> def;
+            list.append(def);
+        }
+        return list;
     }
 
     void addContainer(container toAdd){
@@ -362,7 +396,7 @@ class Commander{
     const string testCom = "test";
     
     //string help = "\nCommand Processor v0.1\n\nList of all available commands:\nhelp - shows this very menu\ncontainer - allows you to control your container, which are needed for the algorithms to work\nsort - allows you to sort containers with the algorithm of your choice\ntest - allows you to run included internal test\n\nAll commands are case-sensitive. Please, don\'t make it harder than it needs to be\n\n";
-    const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer createCustom {NAME} {array OR list} {size(int)} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\ntest - runs included tests for sorting algorithms\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
+    const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer create {NAME} {array OR list} {size(int)} {\"auto\" or \"manual\"} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\ntest size {\"shell\" or \"insert\"} - runs included test on high amount of elements with built-in benchmark and sort check\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
 
     //help = newHelp;
 
@@ -428,7 +462,7 @@ public:
                         }
 
                         if (task.getLevel(1) == "create") {
-                            if (task.commandList.size() == 5) {
+                            if (task.commandList.size() == 6) {
                                 int test;
                                 try {
                                     test = stoi(task.getLevel(4));
@@ -443,23 +477,37 @@ public:
                                 }
 
                                 if (task.getLevel(3) == "list") {
-                                            List<int> cont;
-                                            for (unsigned int i=0; i<test; i++) {
-                                                cont.append(rand()%150+ i*10%rand());
-                                            }
-                                    container contT = container(&cont,task.getLevel(2),"List",false);
-                                    addContainer(contT);
-                                    continue;
+                                    if (task.getLevel(5) == "auto"){        
+                                        Array<int> cont = createRandomArray(test);
+                                        container contT = container(&cont,task.getLevel(2),"List",false);
+                                        addContainer(contT);
+                                        continue;
+                                    }
+                                    else if (task.getLevel(5) == "manual") {
+                                        Array<int> cont = createManualArray(test);
+                                        container contT = container(&cont,task.getLevel(2),"List",false);
+                                        addContainer(contT);
+                                        continue;
+                                    }
                                 }
 
                                 if (task.getLevel(3) == "array") {
-                                            List<int> cont;
-                                            for (unsigned int i=0; i<test; i++) {
-                                                cont.append(rand()%150+ i*10%rand());
-                                            }
-                                    container contT = container(&cont,task.getLevel(2),"Array",false);
-                                    addContainer(contT);
+                                    if (task.getLevel(5) == "auto") { 
+                                        List<int> cont = createRandomList(test);
+                                        container contT = container(&cont,task.getLevel(2),"Array",false);
+                                        addContainer(contT);
+                                        continue;
+                                    }
+                                    else if (task.getLevel(5) == "manual") {
+                                        List<int> cont = createManualList(test);
+                                        container contT = container(&cont,task.getLevel(2),"Array",false);
+                                        addContainer(contT);
+                                        continue;
+                                    }
+
                                 }
+
+                                cout << "Wrong command" << endl;
                                 
                             }
                             else {
@@ -504,46 +552,43 @@ public:
                             }
                         }
 
-                        if (task.getLevel(1) == "createCustom") {
-                            if (task.commandList.size() < 5 or task.commandList.size() > 5) {
-                                cout << "Wrong implementation of the command - go check it in the help menu\n";
-                            }
-                            else {
-                                if (task.getLevel(3) == "array") {
-                                    Array<int> cont = Array<int>();
-                                    if (task.getLevel(4) != "Insufficient amount of arguments for command") {
-                                        for (unsigned int i=0;i<stoi(task.getLevel(4));i++) {
-                                            cont.append(rand()%150+ i*10%rand());
-                                        };
-                                    }
-                                    else {
-                                        for (unsigned int i=0; i<contsize; i++) {
-                                            cont.append(rand()%150+ i*10%rand());
-                                        }
-                                    }
+                        // if (task.getLevel(1) == "createCustom") {
+                        //     if (task.commandList.size() < 5 or task.commandList.size() > 5) {
+                        //         cout << "Wrong implementation of the command - go check it in the help menu\n";
+                        //     }
+                        //     else {
+                        //         if (task.getLevel(3) == "array") {
+                        //             Array<int> cont;
+                        //             if (task.getLevel(4) != "Insufficient amount of arguments for command") {
+                                        
+                        //                 cont = createRandomArray(stoi(task.getLevel(4)));
+                        //             }
+                        //             else {
+                                        
+                        //                 cont = createRandomArray(contsize);
+                        //             }
 
-                                    // for (unsigned int i=0;i<cont.getLength();i++){
-                                    //     cout << cont.get(i) << endl;
-                                    // }
-                                    //print("And here");
-                                    container contT = container(&cont,task.getLevel(2),"Array",false);
-                                    addContainer(contT);
-                                    //print("Succesfully added container");
-                                    print("Succesfully created container with Array type sequence with name:" + task.getLevel(2) + "\n");
-                                    continue;
-                                    }
+                        //             // for (unsigned int i=0;i<cont.getLength();i++){
+                        //             //     cout << cont.get(i) << endl;
+                        //             // }
+                        //             //print("And here");
+                        //             container contT = container(&cont,task.getLevel(2),"Array",false);
+                        //             addContainer(contT);
+                        //             //print("Succesfully added container");
+                        //             print("Succesfully created container with Array type sequence with name:" + task.getLevel(2) + "\n");
+                        //             continue;
+                        //             }
                                 
-                                    else if (task.getLevel(3) == "list") {
-                                            List<int> cont;
-                                            for (unsigned int i=0; i<contsize; i++) {
-                                                cont.append(rand()%150+ i*10%rand());
-                                            }
-                                    container contT = container(&cont,task.getLevel(2),"Array",false);
-                                    addContainer(contT);
-                                }
-                                else cout << "Unknown type of sequential container: available type are: array OR list\n";
-                            }
-                        }
+                        //             else if (task.getLevel(3) == "list") {
+                        //                     List<int> cont = createRandomList(contsize);
+                                            
+                                        
+                        //             container contT = container(&cont,task.getLevel(2),"Array",false);
+                        //             addContainer(contT);
+                        //         }
+                        //         else cout << "Unknown type of sequential container: available type are: array OR list\n";
+                        //     }
+                        // }
                                 
 
                         if (task.getLevel(1) == "show") {
@@ -614,17 +659,33 @@ public:
                     }
                     else {
                         //TO-DO: create string test
-                        continue;
+                        print("string test");
+                        
                     }
 
                     if (task.commandList.size() == 3) {
+                        print("hey");
                         if (task.getLevel(1) == "size") {
                             if (task.getLevel(2) == "shell") {
                                 //TO-DO: create shell sort test with n=10000 
-                                continue;
+                                Array<int> cont = createRandomArray(10000);
+                                container testContainer = container(&cont,"testContainer","Array",false);
+                                print("Running test");
+                                addContainer(testContainer);
+                                shellSortContainer("testContainer");
+                                cout << "Tested Shell sort with n=10000\n";
+                                removeContainer("testContainer");
+                                //continue;
                             }
                             if(task.getLevel(2) == "insert") {
                                 //TO-DO: create insert sort test with n=10000
+                                Array<int> cont = createRandomArray(10000);
+                                container testContainer = container(&cont,"testContainer","Array",false);
+                                print("Running test");
+                                addContainer(testContainer);
+                                insertSortContainer("testContainer");
+                                cout << "Tested Insert sort with n=10000\n";
+                                removeContainer("testContainer");
                                 continue;
                             }
                         }
