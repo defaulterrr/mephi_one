@@ -151,6 +151,9 @@ class Commander{
         }
 
         else if (activeContainer.type == "List") {
+            List<int> sequence = List<int>(activeContainer.value);
+            container newContainer = container(&sequence,newName,"List",activeContainer.sorted);
+            addContainer(newContainer);
 
         }
     }
@@ -410,9 +413,10 @@ class Commander{
     const string containerCom = "container";
     const string sortCom = "sort";
     const string testCom = "test";
+    const string copyCom = "copy";
     
     //string help = "\nCommand Processor v0.1\n\nList of all available commands:\nhelp - shows this very menu\ncontainer - allows you to control your container, which are needed for the algorithms to work\nsort - allows you to sort containers with the algorithm of your choice\ntest - allows you to run included internal test\n\nAll commands are case-sensitive. Please, don\'t make it harder than it needs to be\n\n";
-    const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer create {NAME} {array OR list} {size(int)} {\"auto\" or \"manual\"} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\ntest {\"shell\" or \"insert\"} {\"random\" or \"up\" or \"down\"} - runs included test on high amount of elements with built-in benchmark and sort check\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
+    const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer create {NAME} {array OR list} {size(int)} {\"auto\" or \"manual\"} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\ncopy {NAME1} {NAME2} - copy the container with given name1 to container with name2\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\ntest {\"shell\" or \"insert\"} {\"random\" or \"up\" or \"down\"} - runs included test on high amount of elements with built-in benchmark and sort check\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
 
     //help = newHelp;
 
@@ -660,6 +664,18 @@ public:
                             continue;
                         }
                     }
+                }
+                continue;
+            }
+
+            //addContainerWithCopy
+            if (task.getLevel(0) == copyCom){
+                if (task.commandList.size()!=3) {
+                    cout << "Wrong implementation of the command - go check it in the help menu\n";
+                }
+                else
+                {
+                    addContainerWithCopy(task.getLevel(1), task.getLevel(2));
                 }
                 continue;
             }
