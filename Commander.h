@@ -74,6 +74,22 @@ class Commander{
         return array;
     }
 
+    Array<int> createUpArray(int size){
+        Array<int> array = Array<int>();
+        for (unsigned int i = 0; i<size;i++){
+            array.append(int(i));
+        }
+        return array;
+    }
+
+    Array<int> createDownArray(int size){
+        Array<int> array = Array<int>();
+        for (unsigned int i = size; i>0;i--){
+            array.append(int(i));
+        }
+        return array;
+    }
+
     Array<int> createManualArray(int size){
         Array<int> array = Array<int>();
         for (unsigned int i = 0; i<size;i++){
@@ -396,7 +412,7 @@ class Commander{
     const string testCom = "test";
     
     //string help = "\nCommand Processor v0.1\n\nList of all available commands:\nhelp - shows this very menu\ncontainer - allows you to control your container, which are needed for the algorithms to work\nsort - allows you to sort containers with the algorithm of your choice\ntest - allows you to run included internal test\n\nAll commands are case-sensitive. Please, don\'t make it harder than it needs to be\n\n";
-    const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer create {NAME} {array OR list} {size(int)} {\"auto\" or \"manual\"} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\ntest size {\"shell\" or \"insert\"} - runs included test on high amount of elements with built-in benchmark and sort check\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
+    const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer create {NAME} {array OR list} {size(int)} {\"auto\" or \"manual\"} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\ntest {\"shell\" or \"insert\"} {\"random\" or \"up\" or \"down\"} - runs included test on high amount of elements with built-in benchmark and sort check\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
 
     //help = newHelp;
 
@@ -657,38 +673,97 @@ public:
                         cout << "Wrong implementation of the command - go check it in the help menu\n";
                         continue;
                     }
-                    else {
-                        //TO-DO: create string test
-                        print("string test");
-                        
-                    }
 
                     if (task.commandList.size() == 3) {
-                        print("hey");
-                        if (task.getLevel(1) == "size") {
-                            if (task.getLevel(2) == "shell") {
+                        if (task.getLevel(1) == "shell") {
+                            if (task.getLevel(2) == "random") {
                                 //TO-DO: create shell sort test with n=10000 
                                 Array<int> cont = createRandomArray(10000);
                                 container testContainer = container(&cont,"testContainer","Array",false);
                                 print("Running test");
                                 addContainer(testContainer);
                                 shellSortContainer("testContainer");
-                                cout << "Tested Shell sort with n=10000\n";
+                                cout << "Tested Shell sort with n=10000 elements\n";
                                 removeContainer("testContainer");
                                 //continue;
                             }
-                            if(task.getLevel(2) == "insert") {
+
+                            else if(task.getLevel(2) == "up") {
+                                //TO-DO: create insert sort test with n=10000
+                                Array<int> cont = createUpArray(10000);
+                                container testContainer = container(&cont,"testContainer","Array",false);
+                                print("Running test");
+                                addContainer(testContainer);
+                                shellSortContainer("testContainer");
+                                cout << "Tested Shell sort with n=10000 elements in ascending order\n";
+                                removeContainer("testContainer");
+                                continue;
+                            }
+
+                            else if(task.getLevel(2) == "down") {
+                                //TO-DO: create insert sort test with n=10000
+                                Array<int> cont = createDownArray(10000);
+                                container testContainer = container(&cont,"testContainer","Array",false);
+                                print("Running test");
+                                addContainer(testContainer);
+                                shellSortContainer("testContainer");
+                                cout << "Tested Shell sort with n=10000 elements in descending order\n";
+                                removeContainer("testContainer");
+                                continue;
+                            }
+                            else
+                            {
+                                cout << "Wrong implementation of the command - go check it in the help menu\n";
+                            }
+                            
+                        }
+                        else if (task.getLevel(1) == "insert")
+                        {
+                            if(task.getLevel(2) == "random") {
                                 //TO-DO: create insert sort test with n=10000
                                 Array<int> cont = createRandomArray(10000);
                                 container testContainer = container(&cont,"testContainer","Array",false);
                                 print("Running test");
                                 addContainer(testContainer);
                                 insertSortContainer("testContainer");
-                                cout << "Tested Insert sort with n=10000\n";
+                                cout << "Tested Insert sort with n=10000 elements \n";
                                 removeContainer("testContainer");
                                 continue;
                             }
+
+                            else if(task.getLevel(2) == "up") {
+                                //TO-DO: create insert sort test with n=10000
+                                Array<int> cont = createUpArray(10000);
+                                container testContainer = container(&cont,"testContainer","Array",false);
+                                print("Running test");
+                                addContainer(testContainer);
+                                insertSortContainer("testContainer");
+                                cout << "Tested Insert sort with n=10000 elements in ascending order\n";
+                                removeContainer("testContainer");
+                                continue;
+                            }
+
+                            else if(task.getLevel(2) == "down") {
+                                //TO-DO: create insert sort test with n=10000
+                                Array<int> cont = createDownArray(10000);
+                                container testContainer = container(&cont,"testContainer","Array",false);
+                                print("Running test");
+                                addContainer(testContainer);
+                                insertSortContainer("testContainer");
+                                cout << "Tested Insert sort with n=10000 elements in descending order\n";
+                                removeContainer("testContainer");
+                                continue;
+                            }
+                            else
+                            {
+                                cout << "Wrong implementation of the command - go check it in the help menu\n";
+                            }
+                            
+
+                            
+                            
                         }
+                        
                         else {
                             cout << "Wrong implementation of the command - go check it in the help menu\n";
                         }
