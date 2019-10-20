@@ -435,8 +435,7 @@ public:
                                         Array<int> cont = createManualArray(test);
                                         container contT = container(&cont,task.getLevel(2),"List",false);
                                         addContainer(contT);
-                                        return true;}
-                                }
+                                        return true;}}
                                 if (task.getLevel(3) == "array") {
                                     if (task.getLevel(5) == "auto") { 
                                         List<int> cont = createRandomList(test);
