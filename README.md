@@ -1,3 +1,4 @@
 # mephi_one
 
-### g++-9 -std=c++17 -o EXECUTABLE test.cpp 
+# make - create executable and launch it automatically
+###if it doesn't work, change g++-9 to g++
