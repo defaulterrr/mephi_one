@@ -401,35 +401,25 @@ public:
         cout << "For the list of all available commands enter \"help\"" << endl;
     }
 
-    
-
-    void eventLoop(){
-        while (currentTopLevelCommand != "exit" && currentTopLevelCommand!="q" && currentTopLevelCommand!="quit" && currentTopLevelCommand!="^C"){
-            cout << "  >> ";
-            currentTopLevelCommand = getCommand();
-            
-            Command task = Command(currentTopLevelCommand);
-            if (task.getLevel(0) == helpCom){
-                cout << help;
-                continue;
-            }
-
-            if (task.getLevel(0) == containerCom){
+    bool package_containerCom (Command task) {
+        
                 if (task.commandList.size()==1) {
                     cout << "Wrong implementation of the command - go check it in the help menu\n";
-                    continue;
+                    return false;
                 }
                         if (task.getLevel(1) == "list") {
                             if (task.commandList.size()!= 2) {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
+                                return false;
                             }
 
                             if (containers.size() == 0 ) {
                                 cout << "No containers are available at this moment, you may want to create some\n";
-                                continue;
+                                return true;
                             }
 
                             else listContainers();
+                            return true;
                         }
 
                         if (task.getLevel(1) == "create") {
@@ -440,11 +430,11 @@ public:
                                 }
                                 catch(const std::invalid_argument) {
                                     cout << "Invalid argument: cannot be translated to size\n";
-                                    continue;
+                                    return true;
                                 }
                                 catch(const std::out_of_range) {
                                     cout << "Invalid argument: size is too big\n";
-                                    continue;
+                                    return true;
                                 }
 
                                 if (task.getLevel(3) == "list") {
@@ -452,13 +442,13 @@ public:
                                         Array<int> cont = createRandomArray(test);
                                         container contT = container(&cont,task.getLevel(2),"List",false);
                                         addContainer(contT);
-                                        continue;
+                                        return true;
                                     }
                                     else if (task.getLevel(5) == "manual") {
                                         Array<int> cont = createManualArray(test);
                                         container contT = container(&cont,task.getLevel(2),"List",false);
                                         addContainer(contT);
-                                        continue;
+                                        return true;
                                     }
                                 }
 
@@ -467,13 +457,13 @@ public:
                                         List<int> cont = createRandomList(test);
                                         container contT = container(&cont,task.getLevel(2),"Array",false);
                                         addContainer(contT);
-                                        continue;
+                                        return true;
                                     }
                                     else if (task.getLevel(5) == "manual") {
                                         List<int> cont = createManualList(test);
                                         container contT = container(&cont,task.getLevel(2),"Array",false);
                                         addContainer(contT);
-                                        continue;
+                                        return true;
                                     }
 
                                 }
@@ -497,7 +487,7 @@ public:
                                     container contT = container(&cont,task.getLevel(2),"Array",false);
                                     addContainer(contT);
                                     print("Succesfully created container with Array type sequence with name:" + task.getLevel(2) + "\n");
-                                    continue;
+                                    return true;
                                     }
                                 
                                     else if (task.getLevel(3) == "list") {
@@ -515,41 +505,45 @@ public:
                         if (task.getLevel(1) == "copy") {
                             if (task.commandList.size() != 4) {
                                 cout << "Wrong implementatuin of the command – go check it in the help menu\n";
+                                
                             }
                             else {
                                 addContainerWithCopy(task.getLevel(3),task.getLevel(2));
                                 print("Created new container with name \"" + task.getLevel(2) + "\" as a copy of \"" + task.getLevel(3) +"\"\n");
+                                return true;
                             }
                         }
 
                         if (task.getLevel(1) == "show") {
                             if (task.commandList.size() != 3 ) {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
-                                continue;
+                                return false;
                             }
                             else {
                                 outputContainer(task.getLevel(2));
+                                return true;
                             }
                         }
 
                         if (task.getLevel(1) == "delete") {
                             if (task.commandList.size() != 3) {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
-                                continue;
+                                return false;
                             }
                             else {
                                 removeContainer(task.getLevel(1));
                                 cout << "Removed container with name \"" << task.getLevel(1) << "\"\n";
+                                return true;
                             }
                         }
                         //cout << task.getLevel(2) << endl;
-                        continue;
+                        return false;
             }
 
-            if (task.getLevel(0) == sortCom){
-                if (task.commandList.size() != 3) {
+    bool package_sortCom (Command task) {
+        if (task.commandList.size() != 3) {
                     cout << "Wrong implementation of the command - go check it in the help menu\n";
-                    continue;
+                    return true;
                 }
                 else {
 
@@ -557,54 +551,55 @@ public:
                         //print("Catched shell command");
                         if (task.commandList.size() != 3) {
                         cout << "Wrong implementation of the command - go check it in the help menu\n";
-                        continue;
+                        return true;
                         }
                         else {
                             shellSortContainer(task.getLevel(2));
-                            continue;
+                            return true;
                         }
                     }
 
                     else if (task.getLevel(1) == "insert") {
                         if (task.commandList.size() != 3) {
                             cout << "Wrong implementation of the command - go check it in the help menu\n";
-                            continue;
+                            return true;
                         }
                         else {
                             insertSortContainer(task.getLevel(2));
-                            continue;
+                            return true;
                         }
                     }
                 }
-                continue;
-            }
+                return false;
+    }
 
-            //addContainerWithCopy
-            if (task.getLevel(0) == copyCom){
-                if (task.commandList.size()!=3) {
+    bool package_copyCom (Command task) {
+        if (task.commandList.size()!=3) {
                     cout << "Wrong implementation of the command - go check it in the help menu\n";
+                    return true;
                 }
                 else
                 {
                     addContainerWithCopy(task.getLevel(1), task.getLevel(2));
+                    return true;
                 }
-                continue;
-            }
+                return false;
+    }
 
-            if (task.getLevel(0) == testCom){
-                if (!(task.commandList.size()==3 or task.commandList.size()==2)) {
+    bool package_testCom (Command task) {
+        if (!(task.commandList.size()==3 or task.commandList.size()==2)) {
                     cout << "Wrong implementation of the command - go check it in the help menu\n";
                 }
                 else {
                     if (task.commandList.size() == 2 and task.getLevel(1)!="string") {
                         cout << "Wrong implementation of the command - go check it in the help menu\n";
-                        continue;
+                        return true;
                     }
 
                     if (task.commandList.size() == 3) {
                         if (task.getLevel(1) == "shell") {
                             if (task.getLevel(2) == "random") {
-                                //TO-DO: create shell sort test with n=10000 
+                                
                                 Array<int> cont = createRandomArray(10000);
                                 container testContainer = container(&cont,"testContainer","Array",false);
                                 print("Running test");
@@ -612,11 +607,12 @@ public:
                                 shellSortContainer("testContainer");
                                 cout << "Tested Shell sort with n=10000 elements\n";
                                 removeContainer("testContainer");
+                                return true;
                                 //continue;
                             }
 
                             else if(task.getLevel(2) == "up") {
-                                //TO-DO: create insert sort test with n=10000
+                                
                                 Array<int> cont = createUpArray(10000);
                                 container testContainer = container(&cont,"testContainer","Array",false);
                                 print("Running test");
@@ -624,11 +620,11 @@ public:
                                 shellSortContainer("testContainer");
                                 cout << "Tested Shell sort with n=10000 elements in ascending order\n";
                                 removeContainer("testContainer");
-                                continue;
+                                return true;
                             }
 
                             else if(task.getLevel(2) == "down") {
-                                //TO-DO: create insert sort test with n=10000
+                                
                                 Array<int> cont = createDownArray(10000);
                                 container testContainer = container(&cont,"testContainer","Array",false);
                                 print("Running test");
@@ -636,11 +632,12 @@ public:
                                 shellSortContainer("testContainer");
                                 cout << "Tested Shell sort with n=10000 elements in descending order\n";
                                 removeContainer("testContainer");
-                                continue;
+                                return true;
                             }
                             else
                             {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
+                                return true;
                             }
                             
                         }
@@ -655,7 +652,7 @@ public:
                                 insertSortContainer("testContainer");
                                 cout << "Tested Insert sort with n=10000 elements \n";
                                 removeContainer("testContainer");
-                                continue;
+                                return true;
                             }
 
                             else if(task.getLevel(2) == "up") {
@@ -667,7 +664,7 @@ public:
                                 insertSortContainer("testContainer");
                                 cout << "Tested Insert sort with n=10000 elements in ascending order\n";
                                 removeContainer("testContainer");
-                                continue;
+                                return true;
                             }
 
                             else if(task.getLevel(2) == "down") {
@@ -679,11 +676,11 @@ public:
                                 insertSortContainer("testContainer");
                                 cout << "Tested Insert sort with n=10000 elements in descending order\n";
                                 removeContainer("testContainer");
-                                continue;
+                                return true;
                             }
-                            else
-                            {
+                            else {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
+                                return true;
                             }
                             
 
@@ -693,10 +690,41 @@ public:
                         
                         else {
                             cout << "Wrong implementation of the command - go check it in the help menu\n";
+                            return true;
                         }
                     }
                 }
+                return false;
+    }
+
+    
+    
+
+    void eventLoop(){
+        while (currentTopLevelCommand != "exit" && currentTopLevelCommand!="q" && currentTopLevelCommand!="quit" && currentTopLevelCommand!="^C"){
+            cout << "  >> ";
+            currentTopLevelCommand = getCommand();
+            
+            Command task = Command(currentTopLevelCommand);
+            if (task.getLevel(0) == helpCom){
+                cout << help;
                 continue;
+            }
+
+            if (task.getLevel(0) == containerCom){
+                    if (package_containerCom(task)) continue;
+            }
+
+            if (task.getLevel(0) == sortCom){
+                if (package_sortCom(task)) continue;
+            }
+
+            if (task.getLevel(0) == copyCom){
+                if (package_sortCom(task)) continue;
+            }
+
+            if (task.getLevel(0) == testCom) {
+                if(package_testCom(task)) continue;
             }
 
             if (currentTopLevelCommand != "exit" && currentTopLevelCommand!="q" && currentTopLevelCommand!="quit" && currentTopLevelCommand!="^C") cout << "Unknown Command, please refer to instructions when inputting a command string\n";
