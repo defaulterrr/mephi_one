@@ -402,143 +402,96 @@ public:
     }
 
     bool package_containerCom (Command task) {
-        
                 if (task.commandList.size()==1) {
                     cout << "Wrong implementation of the command - go check it in the help menu\n";
-                    return false;
-                }
+                    return false;}
                         if (task.getLevel(1) == "list") {
                             if (task.commandList.size()!= 2) {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
-                                return false;
-                            }
-
+                                return false;}
                             if (containers.size() == 0 ) {
                                 cout << "No containers are available at this moment, you may want to create some\n";
-                                return true;
-                            }
-
+                                return true;}
                             else listContainers();
-                            return true;
-                        }
-
+                            return true;}
                         if (task.getLevel(1) == "create") {
                             if (task.commandList.size() == 6) {
                                 int test;
                                 try {
-                                    test = stoi(task.getLevel(4));
-                                }
+                                    test = stoi(task.getLevel(4));}
                                 catch(const std::invalid_argument) {
                                     cout << "Invalid argument: cannot be translated to size\n";
-                                    return true;
-                                }
+                                    return true;}
                                 catch(const std::out_of_range) {
                                     cout << "Invalid argument: size is too big\n";
-                                    return true;
-                                }
-
+                                    return true;}
                                 if (task.getLevel(3) == "list") {
                                     if (task.getLevel(5) == "auto"){        
                                         Array<int> cont = createRandomArray(test);
                                         container contT = container(&cont,task.getLevel(2),"List",false);
                                         addContainer(contT);
-                                        return true;
-                                    }
+                                        return true;}
                                     else if (task.getLevel(5) == "manual") {
                                         Array<int> cont = createManualArray(test);
                                         container contT = container(&cont,task.getLevel(2),"List",false);
                                         addContainer(contT);
-                                        return true;
-                                    }
+                                        return true;}
                                 }
-
                                 if (task.getLevel(3) == "array") {
                                     if (task.getLevel(5) == "auto") { 
                                         List<int> cont = createRandomList(test);
                                         container contT = container(&cont,task.getLevel(2),"Array",false);
                                         addContainer(contT);
-                                        return true;
-                                    }
+                                        return true;}
                                     else if (task.getLevel(5) == "manual") {
                                         List<int> cont = createManualList(test);
                                         container contT = container(&cont,task.getLevel(2),"Array",false);
                                         addContainer(contT);
-                                        return true;
-                                    }
-
-                                }
-
-                                cout << "Wrong command" << endl;
-                                
-                            }
+                                        return true;}}
+                                cout << "Wrong command" << endl;}
                             else {
                                 if (task.getLevel(3) == "array") {
                                     Array<int> cont = Array<int>();
                                     if (task.getLevel(4) != "Insufficient amount of arguments for command") {
                                         for (unsigned int i=0;i<stoi(task.getLevel(4));i++) {
-                                            cont.append(rand()%150+ i*10%rand());
-                                        };
-                                    }
+                                            cont.append(rand()%150+ i*10%rand());};}
                                     else {
                                         for (unsigned int i=0; i<contsize; i++) {
-                                            cont.append(rand()%150+ i*10%rand());
-                                        }
-                                    }
+                                            cont.append(rand()%150+ i*10%rand());}}
                                     container contT = container(&cont,task.getLevel(2),"Array",false);
                                     addContainer(contT);
                                     print("Succesfully created container with Array type sequence with name:" + task.getLevel(2) + "\n");
-                                    return true;
-                                    }
-                                
+                                    return true;}
                                     else if (task.getLevel(3) == "list") {
                                             List<int> cont;
                                             for (unsigned int i=0; i<contsize; i++) {
-                                                cont.append(rand()%150+ i*10%rand());
-                                            }
+                                                cont.append(rand()%150+ i*10%rand());}
                                     container contT = container(&cont,task.getLevel(2),"List",false);
-                                    addContainer(contT);
-                                }
-                                else cout << "Unknown type of sequential container: available type are: array OR list\n";
-                            }
-                        }
-
+                                    addContainer(contT);}
+                                else cout << "Unknown type of sequential container: available type are: array OR list\n";}}
                         if (task.getLevel(1) == "copy") {
                             if (task.commandList.size() != 4) {
-                                cout << "Wrong implementatuin of the command – go check it in the help menu\n";
-                                
-                            }
+                                cout << "Wrong implementatuin of the command – go check it in the help menu\n";}
                             else {
                                 addContainerWithCopy(task.getLevel(3),task.getLevel(2));
                                 print("Created new container with name \"" + task.getLevel(2) + "\" as a copy of \"" + task.getLevel(3) +"\"\n");
-                                return true;
-                            }
-                        }
-
+                                return true;}}
                         if (task.getLevel(1) == "show") {
                             if (task.commandList.size() != 3 ) {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
-                                return false;
-                            }
+                                return false;}
                             else {
                                 outputContainer(task.getLevel(2));
-                                return true;
-                            }
-                        }
-
+                                return true;}}
                         if (task.getLevel(1) == "delete") {
                             if (task.commandList.size() != 3) {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
-                                return false;
-                            }
+                                return false;}
                             else {
                                 removeContainer(task.getLevel(1));
                                 cout << "Removed container with name \"" << task.getLevel(1) << "\"\n";
-                                return true;
-                            }
-                        }
-                        //cout << task.getLevel(2) << endl;
-                        return false;
-            }
+                                return true;}}
+                        return false;}
 
     bool package_sortCom (Command task) {
         if (task.commandList.size() != 3) {
