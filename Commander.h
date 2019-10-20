@@ -500,7 +500,6 @@ public:
                 else {
 
                     if (task.getLevel(1) == "shell") {
-                        //print("Catched shell command");
                         if (task.commandList.size() != 3) {
                         cout << "Wrong implementation of the command - go check it in the help menu\n";
                         return true;
@@ -560,7 +559,6 @@ public:
                                 cout << "Tested Shell sort with n=10000 elements\n";
                                 removeContainer("testContainer");
                                 return true;
-                                //continue;
                             }
 
                             else if(task.getLevel(2) == "up") {
@@ -596,7 +594,6 @@ public:
                         else if (task.getLevel(1) == "insert")
                         {
                             if(task.getLevel(2) == "random") {
-                                //TO-DO: create insert sort test with n=10000
                                 Array<int> cont = createRandomArray(10000);
                                 container testContainer = container(&cont,"testContainer","Array",false);
                                 print("Running test");
@@ -608,7 +605,6 @@ public:
                             }
 
                             else if(task.getLevel(2) == "up") {
-                                //TO-DO: create insert sort test with n=10000
                                 Array<int> cont = createUpArray(10000);
                                 container testContainer = container(&cont,"testContainer","Array",false);
                                 print("Running test");
@@ -620,7 +616,6 @@ public:
                             }
 
                             else if(task.getLevel(2) == "down") {
-                                //TO-DO: create insert sort test with n=10000
                                 Array<int> cont = createDownArray(10000);
                                 container testContainer = container(&cont,"testContainer","Array",false);
                                 print("Running test");
