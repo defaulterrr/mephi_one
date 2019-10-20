@@ -4,10 +4,10 @@ using namespace std;
 struct Command{
     string wholeCommand;
     vector<string> commandList;
-    
+
     Command(string command){
         if (command.empty()) {} else {
-        this->wholeCommand = command;
+        this->wholeCommand = command;   
         wholeCommand += ' ';
         analyze();
         }
