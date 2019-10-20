@@ -3,15 +3,8 @@ using namespace std;
 
 struct Command{
     string wholeCommand;
-    // string firstLevel;
-    // string secondLevel;
-    // string thirdLevel;
-    // string fourthLevel;
-
     vector<string> commandList;
-
     
-
     Command(string command){
         if (command.empty()) {} else {
         this->wholeCommand = command;
@@ -50,28 +43,17 @@ private:
 
         for (unsigned int i=0;i<minimalWhiteSpace.size();i++){
             int first = minimalWhiteSpace.find_first_of(' ',i);
-            //cout << first;
             int last = minimalWhiteSpace.find_first_of(' ',first+1);
-            //cout << " To " << last << endl;
             i = first;
             int length = last - first;
             string message = minimalWhiteSpace.substr(first+1,length);
-            //cout << message << endl;
             if (message == "") {} else
             {commandList.push_back(message);}
         }
-
-        // for (int i = 0; i < commandList.size(); i++){
-        //     cout << commandList[i] << endl;
-        // }
-
         for (int i = 0; i < commandList.size(); i++) {
             string message = commandList[i].substr(0,commandList[i].size()-1);
             commandList[i] = message;
-            //cout << message << endl;
         }
-
-        //cout << "minimal white space is : " << minimalWhiteSpace << endl;
     }
     
 };
