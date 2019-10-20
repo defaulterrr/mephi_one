@@ -26,10 +26,6 @@ class Commander{
             this->name = name;
             this->type = type;
             this->sorted = sorted;
-            //cout << "Got here" << endl;
-            // for (unsigned int i =0 ;i<value->getLength();i++){
-            //     cout << this->value->get(i) << endl;
-            // }
         }
 
         container(List<int>* value, string name, string type, bool sorted){
@@ -43,16 +39,9 @@ class Commander{
             this->name = name;
             this->type = type;
             this->sorted = sorted;
-            //cout << "Got here" << endl;
-            // for (unsigned int i =0 ;i<value->getLength();i++){
-            //     cout << this->value->get(i) << endl;
-            // }
         }
 
         ~container(){
-            // if (value!=nullptr) {
-            //     delete [] value;
-            // }
         }
     };
     const int contsize = 10;
@@ -132,7 +121,6 @@ class Commander{
 
     void addContainer(container toAdd){
         containers.push_back(toAdd);
-        //cout << "DEBUG_________Added container" << endl;
     }
 
     void addContainerWithCopy(string withName, string newName){
@@ -168,17 +156,11 @@ class Commander{
         container activeContainer = containers[index];
 
         if (activeContainer.type == "Array") {
-            Sequence<int> *outputSequence = activeContainer.value; 
-            //print("Getting length");
+            Sequence<int> *outputSequence = activeContainer.value;
             for (unsigned int i=0;i<outputSequence->getLength();i++){
-            //print("Output command");
             cout << outputSequence->get(i) << endl;
             }
         }
-        // print("Starting output");
-        // for (unsigned int i=0;i<activeContainer.value->getLength();i++){
-        //     cout << activeContainer.value->get(i) << endl;
-        // }
     }
 
     void outputContainersAsCompare(string firstName, string secondName){
@@ -293,13 +275,6 @@ class Commander{
     checkIfContainerIsSorted(withName);
 
     removeContainer(withName+"_tempsort");
-
-
-
-    //  for (int i = 0; i<100; i++){
-    //     std::cout << activeContainer.value->get(i) << std::endl;
-    // }
-
     std::cout << "Elapsed time is: "<< elapsedTime.count() << " microseconds"<< std::endl;
         
     }
@@ -366,13 +341,9 @@ class Commander{
     }
 
     void listContainers(){
-        // cout << "DEBUG_________Called for listing" << endl;
-        // cout << "DEBUG_________Now " << containers.size() << " Allocated" << endl;
         cout << "Number      Name        Type        Sorted\n";
         cout << "––––––––––––––––––––––––––––––––––––––––––\n";
         for (int i=0;i<containers.size();i++) {
-            // cout.width(8);cout.left;
-            // cout << i << containers[i].name << containers[i].type << containers[i].sorted << endl;
 
             cout.width(12);
             cout.left;
@@ -394,31 +365,15 @@ class Commander{
             cout << endl;
         }
     }
-    /*
-    first level:
-        help    
-        container [2-nd level] [name] [List or Array]
-            create
-            select
-            list
-            delete
-        sort      [2-nd level]
-            shell
-            input
-        test      [2-nd level]
-            test1
-            ...
-    */
+    
     const string helpCom = "help";
     const string containerCom = "container";
     const string sortCom = "sort";
     const string testCom = "test";
     const string copyCom = "copy";
     
-    //string help = "\nCommand Processor v0.1\n\nList of all available commands:\nhelp - shows this very menu\ncontainer - allows you to control your container, which are needed for the algorithms to work\nsort - allows you to sort containers with the algorithm of your choice\ntest - allows you to run included internal test\n\nAll commands are case-sensitive. Please, don\'t make it harder than it needs to be\n\n";
     const string help = "List of all available commands:\nhelp - shows this help menu\ncontainer create {NAME} {array OR list} - creates a container of given name, type and a size of 10 (elements are random)\ncontainer create {NAME} {array OR list} {size(int)} {\"auto\" or \"manual\"} - creates a container of given name, type and size (elements are random)\ncontainer show {NAME} - show the container with given name\ncontainer list - show list of all existed containers\ncontainer delete {NAME}  - delete the container with given name\ncopy {NAME1} {NAME2} - copy the container with given name1 to container with name2\nsort {shell OR insert} {NAME} - sort  the container with given name by shell sort or insert sort\ntest {\"shell\" or \"insert\"} {\"random\" or \"up\" or \"down\"} - runs included test on high amount of elements with built-in benchmark and sort check\n\nAll commands are case-sensitive. Please, don't make it harder than it needs to be\n";    
 
-    //help = newHelp;
 
     void print(string message){
         cout << message << endl;
@@ -454,10 +409,7 @@ public:
             currentTopLevelCommand = getCommand();
             
             Command task = Command(currentTopLevelCommand);
-            //cout << "external access is equal to {" <<task.commandList[0]<< "}"<< endl;
-            //helpCom = task.commandList[0];
             if (task.getLevel(0) == helpCom){
-                //cout << "Catched help command" << endl;
                 cout << help;
                 continue;
             }
@@ -467,7 +419,6 @@ public:
                     cout << "Wrong implementation of the command - go check it in the help menu\n";
                     continue;
                 }
-                //cout << "Catched container command\n";
                         if (task.getLevel(1) == "list") {
                             if (task.commandList.size()!= 2) {
                                 cout << "Wrong implementation of the command - go check it in the help menu\n";
@@ -545,7 +496,6 @@ public:
                                     }
                                     container contT = container(&cont,task.getLevel(2),"Array",false);
                                     addContainer(contT);
-                                    //print("Succesfully added container");
                                     print("Succesfully created container with Array type sequence with name:" + task.getLevel(2) + "\n");
                                     continue;
                                     }
@@ -571,45 +521,6 @@ public:
                                 print("Created new container with name \"" + task.getLevel(2) + "\" as a copy of \"" + task.getLevel(3) +"\"\n");
                             }
                         }
-
-                        // if (task.getLevel(1) == "createCustom") {
-                        //     if (task.commandList.size() < 5 or task.commandList.size() > 5) {
-                        //         cout << "Wrong implementation of the command - go check it in the help menu\n";
-                        //     }
-                        //     else {
-                        //         if (task.getLevel(3) == "array") {
-                        //             Array<int> cont;
-                        //             if (task.getLevel(4) != "Insufficient amount of arguments for command") {
-                                        
-                        //                 cont = createRandomArray(stoi(task.getLevel(4)));
-                        //             }
-                        //             else {
-                                        
-                        //                 cont = createRandomArray(contsize);
-                        //             }
-
-                        //             // for (unsigned int i=0;i<cont.getLength();i++){
-                        //             //     cout << cont.get(i) << endl;
-                        //             // }
-                        //             //print("And here");
-                        //             container contT = container(&cont,task.getLevel(2),"Array",false);
-                        //             addContainer(contT);
-                        //             //print("Succesfully added container");
-                        //             print("Succesfully created container with Array type sequence with name:" + task.getLevel(2) + "\n");
-                        //             continue;
-                        //             }
-                                
-                        //             else if (task.getLevel(3) == "list") {
-                        //                     List<int> cont = createRandomList(contsize);
-                                            
-                                        
-                        //             container contT = container(&cont,task.getLevel(2),"Array",false);
-                        //             addContainer(contT);
-                        //         }
-                        //         else cout << "Unknown type of sequential container: available type are: array OR list\n";
-                        //     }
-                        // }
-                                
 
                         if (task.getLevel(1) == "show") {
                             if (task.commandList.size() != 3 ) {
